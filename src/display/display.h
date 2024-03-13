@@ -1,3 +1,3 @@
 void OLEDBegin();
-void print(String txt = "");
+void print(String txt);
 #pragma once

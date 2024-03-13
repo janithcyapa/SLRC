@@ -24,7 +24,7 @@ void OLEDBegin()
     display.clearDisplay();
     display.display();
 }
-void print(String txt = "")
+void print(String txt)
 {
     display.clearDisplay();
     display.setTextSize(1);              // Normal 1:1 pixel scale
