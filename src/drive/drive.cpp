@@ -6,7 +6,7 @@ Drive::Drive()
 {
 }
 
-int Drive::Setup()
+int Drive::Begin()
 {
     pinMode(MenA, OUTPUT);
     pinMode(MenB, OUTPUT);

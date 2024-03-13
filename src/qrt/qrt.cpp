@@ -1,6 +1,6 @@
+#include <Arduino.h>
 #include <QTRSensors.h>
 #include "qrt.h"
-#include <Arduino.h>
 #include "../config/pins.h"
 using namespace std;
 
@@ -43,7 +43,6 @@ int Qrt::Calibrate(int count)
     Serial.print("Calibration Complete\n");
     return 0;
 }
-
 int Qrt::Readline()
 {
     uint16_t _positionLine;

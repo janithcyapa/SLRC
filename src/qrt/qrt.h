@@ -1,6 +1,6 @@
+#include <Arduino.h>
 #include <QTRSensors.h>
 #include "../config/pins.h"
-#include <Arduino.h>
 class Qrt
 {
 public:
@@ -15,5 +15,4 @@ public:
     int setModeWhite();
     int setModeBlack();
     int Readline();
-    Qrt();
 };

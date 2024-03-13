@@ -2,28 +2,28 @@
 #include <Wire.h>
 #include "drive/drive.h"
 #include "qrt/qrt.h"
-#include <QTRSensors.h>
-// the setup function runs once when you press reset or power the board
+#include "servo/servo.h"
+
 Drive drive = Drive();
 Qrt qrt = Qrt(false);
+Servo servo = Servo();
 void setup()
 {
   Wire.begin();
   Serial.begin(115200);
   Serial.print("Begin Programme...\n");
-  drive.Setup();
-  qrt.Begin();
-  qrt.Calibrate(400);
-  // beginDrive();
+  // drive.Begin();
+  // qrt.Begin();
+  // qrt.Calibrate(400);
+  servo.Begin();
 }
 
-// the loop function runs over and over again forever
 void loop()
 {
-  qrt.Readline();
-  Serial.print(qrt.positionLine);
-  Serial.print('\t');
-  Serial.println(qrt.positionLineData);
-
+  // servo.Set(0, 0);
+  servo.Set(1, 0);
   delay(1000);
+  // servo.Set(0, 90);
+  // delay(1000);
+
 }

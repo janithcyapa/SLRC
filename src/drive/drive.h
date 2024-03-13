@@ -2,7 +2,7 @@
 class Drive
 {
 public:
-    int Setup();
+    int Begin();
     int Stop();
     int Go(int r, int l);
     Drive();
