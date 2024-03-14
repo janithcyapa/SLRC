@@ -1,4 +1,6 @@
 
+#include <Arduino.h>
+#include "../config/pins.h"
 class Drive
 {
 public:
