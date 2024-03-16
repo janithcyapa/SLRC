@@ -3,3 +3,5 @@
 
 #define SERVO_FREQ 60             // Analog servos run at ~50 Hz updates
 #define SERVO_OCILT_FREQ 27000000 // Crystal Oscillator Frequency
+
+#define dt 500

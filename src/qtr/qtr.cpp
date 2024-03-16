@@ -67,9 +67,9 @@ int Qtr::Readline()
     //     Serial.print(sensorValues[i]);
     //     Serial.print('\t');
     // }
-    Serial.print(positionLineData);
-    Serial.print('\t');
-    Serial.println(positionLine);
+    // Serial.print(positionLineData);
+    // Serial.print('\t');
+    // Serial.println(positionLine);
     return 0;
 }
 int Qtr::setModeWhite()
