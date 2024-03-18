@@ -4,10 +4,15 @@
 class Drive
 {
 public:
+    Drive();
     int Begin();
     int Stop();
     int Go(int r, int l);
-    Drive();
+    volatile int tickR;
+    volatile int tickL;
+    static Drive *_instance;
+    static void countr();
+    static void countl();
 };
 
 void OR(int R, uint8_t E1, uint8_t E2);

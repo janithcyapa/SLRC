@@ -5,8 +5,11 @@
 #define Min2 7
 
 #define MenB 6
-#define Min4 4
-#define Min3 5
+#define Min4 5
+#define Min3 4
+
+#define encR 2
+#define encL 3
 
 #define IREmitterPin 13
 #define SensorCount 8

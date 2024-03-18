@@ -16,32 +16,29 @@ int Qtr::Begin()
     qtr.setTypeAnalog();
     qtr.setSensorPins((const uint8_t[]){A0, A1, A2, A3, A4, A5, A6, A7}, _SensorCount);
     qtr.setEmitterPin(IREmitterPin);
-    Serial.print("Qtr Started\n");
     return 0;
 }
 int Qtr::Calibrate(int count)
 {
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite(LED_BUILTIN, HIGH);
-    Serial.print("Calibration Start\n");
     for (uint16_t i = 0; i < 400; i++)
     {
         qtr.calibrate();
     }
     digitalWrite(LED_BUILTIN, LOW);
 
-    for (uint8_t i = 0; i < SensorCount; i++)
-    {
-        Serial.print(qtr.calibrationOn.minimum[i]);
-        Serial.print(' ');
-    }
-    Serial.println();
-    for (uint8_t i = 0; i < SensorCount; i++)
-    {
-        Serial.print(qtr.calibrationOn.maximum[i]);
-        Serial.print(' ');
-    }
-    Serial.print("Calibration Complete\n");
+    // for (uint8_t i = 0; i < SensorCount; i++)
+    // {
+    //     Serial.print(qtr.calibrationOn.minimum[i]);
+    //     Serial.print(' ');
+    // }
+    // Serial.println();
+    // for (uint8_t i = 0; i < SensorCount; i++)
+    // {
+    //     Serial.print(qtr.calibrationOn.maximum[i]);
+    //     Serial.print(' ');
+    // }
     return 0;
 }
 
@@ -72,11 +69,15 @@ int Qtr::Readline()
     // Serial.println(positionLine);
     return 0;
 }
+/// @brief Detection mode to white Line
+/// @return
 int Qtr::setModeWhite()
 {
     isModeWhite = true;
     return 0;
 }
+/// @brief Detection mode to black Line
+/// @return
 int Qtr::setModeBlack()
 {
     isModeWhite = false;

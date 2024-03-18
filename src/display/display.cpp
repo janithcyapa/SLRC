@@ -12,14 +12,14 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 void OLEDBegin()
 {
-    Serial.print(F("Connecting Display\n"));
+    // Serial.print(F("Connecting Display\n"));
     if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS))
     {
         Serial.print(F("SSD1306 allocation failed\n"));
         for (;;)
             ; // Don't proceed, loop forever
     }
-    Serial.print(F("Display Connected\n"));
+    // Serial.print(F("Display Connected\n"));
     // Clear the buffer
     display.clearDisplay();
     display.display();

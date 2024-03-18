@@ -105,5 +105,8 @@
       "commands": "platformio-ide.newTerminal"
     }
   ],
-  "platformio-ide.disablePIOHomeStartup": false
+  "platformio-ide.disablePIOHomeStartup": false,
+  "files.associations": {
+    "new": "cpp"
+  }
 }
