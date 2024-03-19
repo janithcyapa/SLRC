@@ -23,6 +23,9 @@ void loop()
   if (Serial.available() > 0)
   {
     String data = Serial.readStringUntil('\n');
+    // String data = String(Serial.read());
+    // Serial.write(data);
+    // TODO: U Turn , forward, backward
     print(data);
     if (data == "Test")
     {
@@ -31,11 +34,6 @@ void loop()
     else if (data == "QCal")
     {
       qtr.Calibrate(400);
-      Serial.println("DONE");
-    }
-    else if (data == "QWhite")
-    {
-      qtr.setModeWhite();
       Serial.println("DONE");
     }
     else if (data == "QWhite")
@@ -145,6 +143,7 @@ void loop()
     else
     {
       drive.Stop();
+      Serial.println("DONE");
     }
   }
 }

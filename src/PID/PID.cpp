@@ -210,7 +210,7 @@ void TurnU(Drive drive)
     drive.tickR = 0;
     attachInterrupt(digitalPinToInterrupt(encR), Drive::countr, FALLING);
     attachInterrupt(digitalPinToInterrupt(encL), Drive::countl, FALLING);
-    lastError = 0;
+    int lastError = 0;
     I = 0;
     while (drive.tickL < turnL || drive.tickR < turnR)
     {
