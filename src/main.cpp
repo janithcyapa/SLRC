@@ -56,10 +56,28 @@ void loop()
       Serial.println("DONE");
     }
 
-    else if (data == "GoPID")
+    else if (data == "Go")
     {
       print("PID GO");
-      GoPID(qtr, drive);
+      GoPID(qtr, drive, false);
+      Serial.println("DONE");
+    }
+    else if (data == "Reverse")
+    {
+      print("PID GO");
+      ReversePID(qtr, drive, false);
+      Serial.println("DONE");
+    }
+    else if (data == "GoO")
+    {
+      print("PID GO");
+      GoPID(qtr, drive, true);
+      Serial.println("DONE");
+    }
+    else if (data == "ReverseO")
+    {
+      print("PID GO");
+      ReversePID(qtr, drive, true);
       Serial.println("DONE");
     }
     else if (data == "CenterPID")

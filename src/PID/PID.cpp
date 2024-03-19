@@ -22,12 +22,70 @@ int turnL = 1000;
 int UTurnR = 1000;
 int UTurnL = 1000;
 
-void GoPID(Qtr qtr, Drive drive)
+void GoPID(Qtr qtr, Drive drive, boolean DetectObstacle)
 {
     lastError = 0;
     I = 0;
+    if (DetectObstacle)
+        pinMode(ObstaclePin, INPUT);
+
     while (true)
     {
+        if (DetectObstacle)
+            if (digitalRead(ObstaclePin) != 1)
+                break;
+
+        Serial.println("n");
+        delay(500);
+        // qtr.Readline();
+        // String line = qtr.positionLineData;
+        // if (line == "00000000" || line == "11111111" || line == "11111000" || line == "11110000" || line == "00001111" || line == "00011111")
+        // {
+        //     drive.Stop();
+        //     break;
+        // }
+        // else
+        // {
+        //     int error = 3500 - qtr.positionLine;
+
+        //     P = error;
+        //     I = error + I;
+        //     D = error - lastError;
+
+        //     lastError = error;
+
+        //     int motorSpeedChange = P * Kp + I * Ki + D * Kd;
+
+        //     int motorSpeedR = baseSpeed - motorSpeedChange;
+        //     int motorSpeedL = baseSpeed + motorSpeedChange;
+
+        //     if (motorSpeedR < -1 * speedLimit)
+        //         motorSpeedR = -1 * speedLimit;
+        //     else if (motorSpeedR > speedLimit)
+        //         motorSpeedR = speedLimit;
+
+        //     if (motorSpeedL < -1 * speedLimit)
+        //         motorSpeedL = -1 * speedLimit;
+        //     else if (motorSpeedL > speedLimit)
+        //         motorSpeedL = speedLimit;
+
+        //     drive.Go(motorSpeedR, motorSpeedL);
+        // }
+    }
+}
+void ReversePID(Qtr qtr, Drive drive, boolean DetectObstacle)
+{
+    lastError = 0;
+    I = 0;
+    if (DetectObstacle)
+        pinMode(ObstaclePin, INPUT);
+
+    while (true)
+    {
+        if (DetectObstacle)
+            if (digitalRead(ObstaclePin) != 1)
+                break;
+
         qtr.Readline();
         String line = qtr.positionLineData;
         if (line == "00000000" || line == "11111111" || line == "11111000" || line == "11110000" || line == "00001111" || line == "00011111")
@@ -47,8 +105,8 @@ void GoPID(Qtr qtr, Drive drive)
 
             int motorSpeedChange = P * Kp + I * Ki + D * Kd;
 
-            int motorSpeedR = baseSpeed - motorSpeedChange;
-            int motorSpeedL = baseSpeed + motorSpeedChange;
+            int motorSpeedR = baseSpeed + motorSpeedChange;
+            int motorSpeedL = baseSpeed - motorSpeedChange;
 
             if (motorSpeedR < -1 * speedLimit)
                 motorSpeedR = -1 * speedLimit;
@@ -60,7 +118,7 @@ void GoPID(Qtr qtr, Drive drive)
             else if (motorSpeedL > speedLimit)
                 motorSpeedL = speedLimit;
 
-            drive.Go(motorSpeedR, motorSpeedL);
+            drive.Go(-1 * motorSpeedR, -1 * motorSpeedL);
         }
     }
 }

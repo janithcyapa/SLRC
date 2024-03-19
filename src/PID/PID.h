@@ -9,7 +9,8 @@ extern int turnR;
 extern int UTurnL;
 extern int UTurnR;
 
-void GoPID(Qtr qtr, Drive drive);
+void GoPID(Qtr qtr, Drive drive, boolean DetectObstacle);
+void ReversePID(Qtr qtr, Drive drive, boolean DetectObstacle);
 void CenterPID(Qtr qtr, Drive drive);
 void TurnR(Drive drive);
 void TurnL(Drive drive);
