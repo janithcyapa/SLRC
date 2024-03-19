@@ -15,7 +15,7 @@ void OLEDBegin()
     // Serial.print(F("Connecting Display\n"));
     if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS))
     {
-        Serial.print(F("SSD1306 allocation failed\n"));
+        // Serial.print(F("SSD1306 allocation failed\n"));
         for (;;)
             ; // Don't proceed, loop forever
     }
@@ -32,5 +32,5 @@ void print(String txt)
     display.setCursor(0, 0);             // Start at top-left corner
     display.println(txt);
     display.display();
-    Serial.println(txt + "\n");
+    // Serial.println(txt + "\n");
 }
