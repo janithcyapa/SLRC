@@ -7,6 +7,7 @@ public:
     Drive();
     int Begin();
     int Stop();
+    int Encored(int rC, int lC);
     int Go(int r, int l);
     volatile int tickR;
     volatile int tickL;

@@ -8,22 +8,11 @@ int P;
 int I;
 int D;
 
-float Kp = 0.03;
-float Ki = 0.0;
-float Kd = 0.01;
-
 int lastError = 0;
-
-int baseSpeed = 75;
-int speedLimit = 255;
-
-int turnR = 1000;
-int turnL = 1000;
-int UTurnR = 1000;
-int UTurnL = 1000;
 
 void GoPID(Qtr qtr, Drive drive, boolean DetectObstacle)
 {
+    Serial.println(Kp);
     lastError = 0;
     I = 0;
     if (DetectObstacle)
@@ -120,7 +109,6 @@ void ReversePID(Qtr qtr, Drive drive, boolean DetectObstacle)
         }
     }
 }
-
 void CenterPID(Qtr qtr, Drive drive)
 {
     lastError = 0;
@@ -162,74 +150,4 @@ void CenterPID(Qtr qtr, Drive drive)
             drive.Go(motorSpeedR, motorSpeedL);
         }
     }
-}
-
-void TurnR(Drive drive)
-{
-    drive._instance->tickR = 0;
-    lastError = 0;
-    I = 0;
-    attachInterrupt(digitalPinToInterrupt(encR), Drive::countr, FALLING);
-    while (drive._instance->tickR < turnR)
-    {
-        int error = turnR - (drive._instance->tickR);
-        // Serial.print(error);
-        P = error;
-        I = error + I;
-        D = error - lastError;
-        int motorSpeedChange = baseSpeed + P * Kp + I * Ki + D * Kd;
-        motorSpeedChange = constrain(motorSpeedChange, 0, 255);
-        // Serial.println(motorSpeedChange);
-        drive.Go(0, motorSpeedChange);
-    }
-    detachInterrupt(digitalPinToInterrupt(encR));
-    drive.Stop();
-}
-void TurnL(Drive drive)
-{
-    drive._instance->tickL = 0;
-    attachInterrupt(digitalPinToInterrupt(encL), Drive::countl, FALLING);
-    lastError = 0;
-    I = 0;
-    while (drive._instance->tickL < turnL)
-    {
-        int error = turnL - drive._instance->tickL;
-        P = error;
-        I = error + I;
-        D = error - lastError;
-        int motorSpeedChange = baseSpeed + P * Kp + I * Ki + D * Kd;
-        motorSpeedChange = constrain(motorSpeedChange, 0, 255);
-        drive.Go(motorSpeedChange, 0);
-    }
-    detachInterrupt(digitalPinToInterrupt(encL));
-    drive.Stop();
-}
-void TurnU(Drive drive)
-{
-    drive.tickL = 0;
-    drive.tickR = 0;
-    attachInterrupt(digitalPinToInterrupt(encR), Drive::countr, FALLING);
-    attachInterrupt(digitalPinToInterrupt(encL), Drive::countl, FALLING);
-    int lastError = 0;
-    I = 0;
-    while (drive.tickL < turnL || drive.tickR < turnR)
-    {
-        int error = drive.tickL - turnL;
-        P = error;
-        I = error + I;
-        D = error - lastError;
-        int motorSpeedChange = P * Kp + I * Ki + D * Kd;
-        motorSpeedChange = constrain(motorSpeedChange, 0, 255);
-        int R = 0;
-        int L = 0;
-        if (drive.tickL < turnL)
-            L = -1 * motorSpeedChange;
-        if (drive.tickR < turnR)
-            R = motorSpeedChange;
-
-        drive.Go(R, L);
-    }
-    detachInterrupt(digitalPinToInterrupt(encR));
-    detachInterrupt(digitalPinToInterrupt(encL));
-    drive.Stop();
 }

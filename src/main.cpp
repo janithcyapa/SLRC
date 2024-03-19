@@ -4,9 +4,15 @@
 #include "qtr/qtr.h"
 #include "PID/PID.h"
 #include "display/display.h"
-
+#include "config/constants.h"
 Drive drive = Drive();
-Qtr qtr = Qtr(true);
+Qtr qtr = Qtr(false);
+
+float Kp = 0.1;
+float Ki = 0.0001;
+float Kd = 0.01;
+int baseSpeed = 75;
+int speedLimit = 255;
 
 void setup()
 {
@@ -26,7 +32,8 @@ void loop()
     // String data = String(Serial.read());
     // Serial.write(data);
     // TODO: U Turn , forward, backward
-    print(data);
+    // print(data);
+    // Serial.println(data);
     if (data == "Test")
     {
       Serial.println("TESTDONE");
@@ -66,26 +73,23 @@ void loop()
       ReversePID(qtr, drive, true);
       Serial.println("DONE");
     }
+    else if (data.indexOf("D") != -1)
+    {
+
+      int pos1 = data.indexOf('_');
+      int pos2 = data.lastIndexOf('_');
+      int RC = data.substring(pos1 + 1, pos2).toInt();
+      int LC = data.substring(pos2 + 1).toInt();
+      drive.Encored(RC, LC);
+      Serial.println("DONE");
+    }
+
     else if (data == "CenterPID")
     {
       CenterPID(qtr, drive);
       Serial.println("DONE");
     }
-    else if (data == "TurnR")
-    {
-      TurnR(drive);
-      Serial.println("DONE");
-    }
-    else if (data == "TurnL")
-    {
-      TurnL(drive);
-      Serial.println("DONE");
-    }
-    else if (data == "U")
-    {
-      TurnU(drive);
-      Serial.println("DONE");
-    }
+
     else if (data.indexOf("Kp") != -1)
     {
       float number = String(data).substring(String(data).indexOf('_') + 1).toFloat();
@@ -114,30 +118,6 @@ void loop()
     {
       int number = String(data).substring(String(data).indexOf('_') + 1).toInt();
       speedLimit = number;
-      Serial.println("DONE");
-    }
-    else if (data.indexOf("TR") != -1)
-    {
-      int number = String(data).substring(String(data).indexOf('_') + 1).toInt();
-      turnR = number;
-      Serial.println("DONE");
-    }
-    else if (data.indexOf("TL") != -1)
-    {
-      int number = String(data).substring(String(data).indexOf('_') + 1).toInt();
-      turnL = number;
-      Serial.println("DONE");
-    }
-    else if (data.indexOf("UTR") != -1)
-    {
-      int number = String(data).substring(String(data).indexOf('_') + 1).toInt();
-      UTurnR = number;
-      Serial.println("DONE");
-    }
-    else if (data.indexOf("UTL") != -1)
-    {
-      int number = String(data).substring(String(data).indexOf('_') + 1).toInt();
-      UTurnL = number;
       Serial.println("DONE");
     }
     else

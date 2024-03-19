@@ -1,3 +1,9 @@
+extern float Kp;
+extern float Ki;
+extern float Kd;
+extern int baseSpeed;
+extern int speedLimit;
+
 #define SERVOMIN 105 // This is the 'minimum' pulse length count (out of 4096)
 #define SERVOMAX 565 // This is the 'maximum' pulse length count (out of 4096)
 
