@@ -2,7 +2,6 @@
 #include <Wire.h>
 #include "drive/drive.h"
 #include "qtr/qtr.h"
-#include "PID/PID.h"
 #include "display/display.h"
 #include "config/constants.h"
 Drive drive = Drive();
@@ -14,6 +13,7 @@ float Kd = 0.01;
 int baseSpeed = 75;
 int speedLimit = 255;
 
+int P = 0, D = 0, I = 0, LE = 0;
 void setup()
 {
   Wire.begin();
@@ -29,11 +29,7 @@ void loop()
   if (Serial.available() > 0)
   {
     String data = Serial.readStringUntil('\n');
-    // String data = String(Serial.read());
-    // Serial.write(data);
-    // TODO: U Turn , forward, backward
-    // print(data);
-    // Serial.println(data);
+
     if (data == "Test")
     {
       Serial.println("TESTDONE");
@@ -53,24 +49,120 @@ void loop()
       qtr.setModeWhite();
       Serial.println("DONE");
     }
-    else if (data == "Go")
+    else if (data == "Go" || data == "GoO")
     {
-      GoPID(qtr, drive, false);
+      LE = 0;
+      I = 0;
+      if (data == "GoO")
+        pinMode(ObstaclePin, INPUT);
+      while (true)
+      {
+        if (data == "GoO")
+          if (digitalRead(ObstaclePin) != 1)
+            break;
+        qtr.Readline();
+        String line = qtr.positionLineData;
+        if (line == "00000000" || line == "11111111" || line == "11111000" || line == "11110000" || line == "00001111" || line == "00011111")
+        {
+          drive.Stop();
+          break;
+        }
+        else
+        {
+          int error = 3500 - qtr.positionLine;
+
+          P = error;
+          I = error + I;
+          D = error - LE;
+
+          LE = error;
+
+          int mSP = P * Kp + I * Ki + D * Kd;
+
+          int R = baseSpeed - mSP;
+          int L = baseSpeed + mSP;
+
+          R = constrain(R, -1 * speedLimit, speedLimit);
+          L = constrain(L, -1 * speedLimit, speedLimit);
+          drive.Go(R, L);
+        }
+      }
       Serial.println("DONE");
     }
-    else if (data == "Reverse")
+    else if (data == "Reverse" || data == "ReverseO")
     {
-      ReversePID(qtr, drive, false);
+      LE = 0;
+      I = 0;
+      if (data == "ReverseO")
+        pinMode(ObstaclePin, INPUT);
+      while (true)
+      {
+        if (data == "ReverseO")
+          if (digitalRead(ObstaclePin) != 1)
+            break;
+        qtr.Readline();
+        String line = qtr.positionLineData;
+        if (line == "00000000" || line == "11111111" || line == "11111000" || line == "11110000" || line == "00001111" || line == "00011111")
+        {
+          drive.Stop();
+          break;
+        }
+        else
+        {
+          int error = 3500 - qtr.positionLine;
+
+          P = error;
+          I = error + I;
+          D = error - LE;
+
+          LE = error;
+
+          int mSP = P * Kp + I * Ki + D * Kd;
+
+          int R = baseSpeed + mSP;
+          int L = baseSpeed - mSP;
+
+          R = constrain(R, -1 * speedLimit, speedLimit);
+          L = constrain(L, -1 * speedLimit, speedLimit);
+          drive.Go(R, L);
+        }
+      }
       Serial.println("DONE");
     }
-    else if (data == "GoO")
+    else if (data == "CenterPID")
     {
-      GoPID(qtr, drive, true);
-      Serial.println("DONE");
-    }
-    else if (data == "ReverseO")
-    {
-      ReversePID(qtr, drive, true);
+      LE = 0;
+      I = 0;
+      while (true)
+      {
+        qtr.Readline();
+        String line = qtr.positionLineData;
+        int error = 3500 - qtr.positionLine;
+        if (abs(error) < 100)
+        {
+          drive.Stop();
+          break;
+        }
+        else
+        {
+
+          P = error;
+          I = error + I;
+          D = error - LE;
+
+          LE = error;
+
+          int mSP = P * Kp + I * Ki + D * Kd;
+
+          int R = baseSpeed + mSP;
+          int L = baseSpeed - mSP;
+
+          R = constrain(R, -1 * speedLimit, speedLimit);
+          L = constrain(L, -1 * speedLimit, speedLimit);
+          drive.Go(R, L);
+        }
+      }
+
       Serial.println("DONE");
     }
     else if (data.indexOf("D") != -1)
@@ -81,12 +173,6 @@ void loop()
       int RC = data.substring(pos1 + 1, pos2).toInt();
       int LC = data.substring(pos2 + 1).toInt();
       drive.Encored(RC, LC);
-      Serial.println("DONE");
-    }
-
-    else if (data == "CenterPID")
-    {
-      CenterPID(qtr, drive);
       Serial.println("DONE");
     }
 

@@ -93,7 +93,6 @@ int Drive::Encored(int rC, int lC)
             rD = rE - rLE;
             rLE = rE;
             R = baseSpeed + rP * Kp + rI * Ki + rD * Kd;
-            Serial.print(String(_instance->tickR) + "\t" + String(rE) + "\t" + String(R));
         }
         if (abs(lC) > _instance->tickL)
         {
@@ -105,14 +104,12 @@ int Drive::Encored(int rC, int lC)
             lLE = lE;
 
             L = baseSpeed + lP * Kp + lI * Ki + lD * Kd;
-            Serial.print("\t" + String(_instance->tickL) + "\t" + String(lE) + "\t" + String(L));
         }
 
         R = constrain(R, 0, speedLimit);
         L = constrain(L, 0, speedLimit);
         R = rC > 0 ? R : -1 * R;
         L = lC > 0 ? L : -1 * L;
-        Serial.println("\t" + String(R) + "\t" + String(L));
 
         Go(R, L);
     }
