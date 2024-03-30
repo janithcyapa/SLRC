@@ -14,7 +14,8 @@
 #define IREmitterPin 13
 #define SensorCount 8
 
-#define ObstaclePin 12
+#define ObstaclePin1 10
+#define ObstaclePin2 11
 
 #define TriggerPin 9
 #define EchoPin 10

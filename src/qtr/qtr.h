@@ -5,6 +5,7 @@ class Qtr
 {
 public:
     QTRSensors qtr;
+    int threshold[SensorCount];
     bool isModeWhite;
     uint16_t positionLine;
     String positionLineData;

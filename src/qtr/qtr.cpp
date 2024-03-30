@@ -7,6 +7,11 @@ using namespace std;
 
 Qtr::Qtr(bool _isModeWhite)
 {
+
+    for (int i = 0; i < SensorCount; i++)
+    {
+        threshold[i] = 400;
+    }
     isModeWhite = _isModeWhite;
     positionLineData = "";
 }
@@ -26,6 +31,10 @@ int Qtr::Calibrate(int count)
     {
         qtr.calibrate();
     }
+    // for (uint8_t i = 0; i < SensorCount; i++)
+    // {
+    //     threshold[i] = (qtr.calibrationOn.maximum[i] + qtr.calibrationOn.minimum[i]) / 2;
+    // }
     digitalWrite(LED_BUILTIN, LOW);
 
     // for (uint8_t i = 0; i < SensorCount; i++)
@@ -39,6 +48,13 @@ int Qtr::Calibrate(int count)
     //     Serial.print(qtr.calibrationOn.maximum[i]);
     //     Serial.print(' ');
     // }
+    // Serial.println();
+    // for (uint8_t i = 0; i < SensorCount; i++)
+    // {
+    //     Serial.print(threshold[i]);
+    //     Serial.print(' ');
+    // }
+
     return 0;
 }
 
@@ -53,7 +69,7 @@ int Qtr::Readline()
 
     String _positionLineData;
     for (uint8_t i = 0; i < SensorCount; i++)
-        if (sensorValues[i] > 900)
+        if (sensorValues[i] < threshold[i])
             _positionLineData = _positionLineData + "1";
         else
             _positionLineData = _positionLineData + "0";
@@ -66,8 +82,9 @@ int Qtr::Readline()
     // }
     // Serial.print(positionLineData);
     // Serial.print('\t');
-    // Serial.println(positionLine);
-    return 0;
+    // Serial.print(positionLine);
+    // Serial.print('\t');
+    return _positionLine;
 }
 /// @brief Detection mode to white Line
 /// @return

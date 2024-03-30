@@ -83,11 +83,14 @@ int Drive::Encored(int rC, int lC)
 
     while (abs(rC) > _instance->tickR || abs(lC) > _instance->tickL)
     {
+        // Serial.print(_instance->tickR);
+        // Serial.print("\t");
+        // Serial.print(_instance->tickL);
         int R = 0;
         int L = 0;
         if (abs(rC) > _instance->tickR)
         {
-            int rE = abs(rC) - (_instance->tickR);
+            int rE = abs(rC) > _instance->tickR ? abs(rC) - (_instance->tickR) : 0;
             rP = rE;
             rI = rE + rI;
             rD = rE - rLE;
@@ -111,6 +114,10 @@ int Drive::Encored(int rC, int lC)
         R = rC > 0 ? R : -1 * R;
         L = lC > 0 ? L : -1 * L;
 
+        // Serial.print("\t");
+        // Serial.print(R);
+        // Serial.print("\t");
+        // Serial.println(L);
         Go(R, L);
     }
     Stop();
@@ -121,12 +128,14 @@ int Drive::Encored(int rC, int lC)
 
 void OR(int R, uint8_t E1, uint8_t E2)
 {
+    // Serial.println(R);
     analogWrite(MenA, R);
     digitalWrite(Min1, E1);
     digitalWrite(Min2, E2);
 }
 void OL(int L, uint8_t E3, uint8_t E4)
 {
+    // Serial.println(L);
     analogWrite(MenB, L);
     digitalWrite(Min3, E3);
     digitalWrite(Min4, E4);
